@@ -87,25 +87,63 @@ function distanceMeters(coordinates: Coordinate[]): number {
   return Math.round(total)
 }
 
-function safeXmlText(value: string): string {
-  const withoutMarkup = value
-    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-    .replace(/<[^>]+>/g, '')
-  const decoded = withoutMarkup.replace(/&(lt|gt|amp|quot|apos|#39);/gi, (match, entity: string) => {
-    const replacements: Record<string, string> = {
-      lt: '',
-      gt: '',
-      amp: '&',
-      quot: '"',
-      apos: "'",
-      '#39': "'"
+function stripXmlMarkup(value: string): string {
+  let output = ''
+  for (let index = 0; index < value.length;) {
+    if (value.startsWith('<![CDATA[', index)) {
+      index += '<![CDATA['.length
+      continue
     }
-    return replacements[entity.toLowerCase()] ?? match
-  })
-  return decoded
-    .replace(/&(?:#\d+|#x[\da-f]+|[a-z][\w.-]*);/gi, '')
-    .replace(/[<>]/g, '')
-    .trim()
+    if (value.startsWith(']]>', index)) {
+      index += ']]>'.length
+      continue
+    }
+    if (value[index] === '<') {
+      const end = value.indexOf('>', index + 1)
+      if (end < 0) break
+      index = end + 1
+      continue
+    }
+    if (value[index] !== '>') output += value[index]
+    index += 1
+  }
+  return output
+}
+
+function decodeXmlEntityPass(value: string): string {
+  let output = ''
+  for (let index = 0; index < value.length;) {
+    const character = value[index]
+    if (character !== '&') {
+      if (character !== '<' && character !== '>') output += character
+      index += 1
+      continue
+    }
+    const end = value.indexOf(';', index + 1)
+    if (end < 0 || end - index > 16) {
+      output += '&'
+      index += 1
+      continue
+    }
+    const entity = value.slice(index + 1, end).toLowerCase()
+    if (entity === 'amp') output += '&'
+    else if (entity === 'quot') output += '"'
+    else if (entity === 'apos' || entity === '#39') output += "'"
+    // Angle-bracket and unknown entities are omitted so later rendering
+    // cannot reinterpret imported text as markup.
+    index = end + 1
+  }
+  return output
+}
+
+function safeXmlText(value: string): string {
+  let decoded = stripXmlMarkup(value)
+  for (let pass = 0; pass < 4; pass += 1) {
+    const next = decodeXmlEntityPass(decoded)
+    if (next === decoded) break
+    decoded = next
+  }
+  return decoded.trim()
 }
 
 function tagText(xml: string, tag: string): string | undefined {
