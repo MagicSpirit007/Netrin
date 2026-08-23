@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netrin.local/schemas/appearance-manifest-v3.json",
+  "title": "Netrin appearance package manifest v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "packageFormat", "interfaceContractVersion", "id", "displayName", "summary", "version", "type", "author", "license", "compatibility", "entrypoints", "assets", "files"],
+  "properties": {
+    "schemaVersion": { "const": 3 },
+    "packageFormat": { "const": "netrin-appearance-zip" },
+    "interfaceContractVersion": { "const": 2 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "displayName": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[a-z0-9.-]+)?$" },
+    "type": { "const": "skin" },
+    "author": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "license": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minAppVersion"],
+      "properties": {
+        "minAppVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[a-z0-9.-]+)?$" },
+        "maxAppVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[a-z0-9.-]+)?$" }
+      }
+    },
+    "entrypoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tokens", "theme"],
+      "properties": { "tokens": { "const": "tokens.json" }, "theme": { "const": "theme.css" } }
+    },
+    "assets": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "mimeType", "bytes", "sha256"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^assets/[A-Za-z0-9][A-Za-z0-9._/-]*$" },
+          "mimeType": { "enum": ["image/png", "image/jpeg", "image/webp", "font/woff2"] },
+          "bytes": { "type": "integer", "minimum": 1, "maximum": 2097152 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "files": {
+      "type": "array", "minItems": 2, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^(?:tokens\\.json|theme\\.css|assets/[A-Za-z0-9][A-Za-z0-9._/-]*)$" },
+          "bytes": { "type": "integer", "minimum": 0, "maximum": 2097152 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

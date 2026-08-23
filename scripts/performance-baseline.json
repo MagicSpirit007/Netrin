@@ -1,0 +1,15 @@
+{
+  "capturedFrom": "v0.1.2 public-release candidate built from the clean source tree with Node.js 22.19.0",
+  "previousProduction": "private operational record intentionally omitted from the public repository",
+  "policy": "Fail when a first-screen or key-route asset exceeds this reviewed source-build baseline by more than 10%; update only with an explained release change.",
+  "assets": {
+    "entry-js": { "prefix": "index-", "suffix": ".js", "bytes": 103700 },
+    "entry-css": { "prefix": "index-", "suffix": ".css", "bytes": 51348 },
+    "home": { "prefix": "HomeScreen-", "suffix": ".js", "bytes": 23751 },
+    "discover": { "prefix": "DiscoverScreen-", "suffix": ".js", "bytes": 7519 },
+    "create": { "prefix": "CreateScreen-", "suffix": ".js", "bytes": 29162 },
+    "route-detail": { "prefix": "RouteDetailScreen-", "suffix": ".js", "bytes": 6213 },
+    "guide": { "prefix": "GuideScreen-", "suffix": ".js", "bytes": 1400 },
+    "profile": { "prefix": "ProfileScreen-", "suffix": ".js", "bytes": 18065 }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "netrin-cell",
+  "name": "Netrin",
+  "description": "A nationwide mobile-first PWA for authoring, publishing, discovering, downloading, and navigating moderated walking, CityWalk, and recreational cycling routes—without designating any default sample city.",
+  "platform": {
+    "primarySurface": "mobile-web",
+    "packaging": ["web"]
+  },
+  "kernel": {
+    "inheritsPlugins": "neuron-nucleus-library"
+  },
+  "home": {
+    "layout": "map-canvas",
+    "feedDensity": "medium",
+    "primaryCard": "route-card"
+  },
+  "contentTypes": [
+    {
+      "id": "community-route",
+      "name": "Community Route",
+      "fields": [
+        "title",
+        "description",
+        "author",
+        "city",
+        "travelMode",
+        "geometry",
+        "geometrySource",
+        "distanceMeters",
+        "durationSeconds",
+        "difficulty",
+        "isLoop",
+        "tags",
+        "coverMedia",
+        "moderationStatus",
+        "createdAt",
+        "highlights"
+      ]
+    },
+    {
+      "id": "route-highlight",
+      "name": "Route Highlight",
+      "fields": [
+        "highlightTitle",
+        "description",
+        "location",
+        "media",
+        "category",
+        "order"
+      ]
+    }
+  ],
+  "plugins": {
+    "ranking": "nearby-trail-synapse",
+    "theme": "field-guide-phenotype",
+    "moderation": "curated-publication-cortex",
+    "ai": "ai-route-cortex"
+  },
+  "navigation": {
+    "type": "bottom-tabs",
+    "items": ["home", "discover", "create", "profile"]
+  }
+}

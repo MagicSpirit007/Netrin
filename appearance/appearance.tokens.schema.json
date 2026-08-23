@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netrin.local/schemas/appearance-tokens-v3.json",
+  "title": "Netrin appearance tokens v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["primitive", "semantic", "component"],
+  "properties": {
+    "primitive": { "$ref": "#/$defs/group" },
+    "semantic": { "$ref": "#/$defs/group" },
+    "component": { "$ref": "#/$defs/group" }
+  },
+  "$defs": {
+    "group": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "oneOf": [{ "$ref": "#/$defs/token" }, { "$ref": "#/$defs/group" }] }
+    },
+    "token": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$type", "$value"],
+      "properties": {
+        "$type": { "enum": ["color", "dimension", "duration", "fontFamily", "fontWeight", "number", "shadow"] },
+        "$value": { "type": ["string", "number"] },
+        "$description": { "type": "string" }
+      }
+    }
+  }
+}

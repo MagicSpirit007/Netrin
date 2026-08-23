@@ -1,0 +1,12 @@
+{
+  "name": "移步换景",
+  "short_name": "Netrin",
+  "description": "全国步行与骑行观光路线分享",
+  "lang": "zh-CN",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/netrin/",
+  "scope": "/netrin/",
+  "background_color": "#0b0c0e",
+  "theme_color": "#0b0c0e"
+}

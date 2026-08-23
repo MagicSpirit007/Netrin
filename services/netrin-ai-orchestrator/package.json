@@ -1,0 +1,37 @@
+{
+  "name": "netrin-ai-orchestrator",
+  "private": true,
+  "version": "0.1.0",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicSpirit007/Netrin.git",
+    "directory": "services/netrin-ai-orchestrator"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node --import tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "test:integration": "vitest run test/integration",
+    "build": "npm run typecheck"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "0.82.1",
+    "@earendil-works/pi-ai": "0.82.1",
+    "tsx": "4.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.11",
+    "typescript": "5.6.3",
+    "vitest": "4.1.10"
+  },
+  "overrides": {
+    "nanoid": "3.3.18"
+  }
+}

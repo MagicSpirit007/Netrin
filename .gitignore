@@ -1,0 +1,13 @@
+node_modules
+dist
+dev-dist
+deploy/
+.deploy/
+appearance-work/
+appearance-output/
+*.log
+*.local
+.env
+SERVER.md
+rubbish/
+.DS_Store

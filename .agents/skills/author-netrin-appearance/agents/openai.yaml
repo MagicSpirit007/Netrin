@@ -1,0 +1,6 @@
+interface:
+  display_name: "Netrin 外观组协作"
+  short_description: "与 AI 协作创建、校验并审查 Netrin v3 外观组"
+  default_prompt: "Use $author-netrin-appearance to turn my visual direction into a reviewed Netrin v3 appearance package."
+policy:
+  allow_implicit_invocation: true

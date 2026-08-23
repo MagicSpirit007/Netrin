@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netrin.local/schemas/interface-contract-v1.json",
+  "title": "Netrin style-neutral interface contract",
+  "type": "object",
+  "required": ["schemaVersion", "application", "globalRequirements", "screens", "components", "appearanceBoundary"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "application": { "type": "object" },
+    "globalRequirements": { "type": "array", "items": { "type": "string" } },
+    "screens": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["id", "purpose", "requiredElements", "actions", "states"]
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["id", "inputs", "states"]
+      }
+    },
+    "appearanceBoundary": {
+      "type": "object",
+      "required": ["receives", "mustNotAccess"]
+    }
+  },
+  "additionalProperties": false
+}
