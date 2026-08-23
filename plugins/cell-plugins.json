@@ -1,0 +1,61 @@
+{
+  "cellId": "netrin-cell",
+  "plugins": [
+    {
+      "id": "curated-publication-cortex",
+      "role": "cortex",
+      "sourceLevel": "cell",
+      "capabilities": ["route.review", "appearance.review", "account.moderate", "audit.read"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    },
+    {
+      "id": "nearby-trail-synapse",
+      "role": "synapse",
+      "sourceLevel": "cell",
+      "capabilities": ["route.rank.nearby", "route.rank.city", "route.rank.mode", "route.rank.theme"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    },
+    {
+      "id": "field-guide-phenotype",
+      "role": "phenotype",
+      "sourceLevel": "cell",
+      "capabilities": ["theme.tokens", "theme.mobile-layout", "theme.pixel-map"],
+      "platforms": { "web": "content-only", "ios": "content-only", "android": "content-only" }
+    },
+    {
+      "id": "geo-location-dendrite",
+      "role": "dendrite",
+      "sourceLevel": "cell",
+      "capabilities": ["location.watch", "location.record", "location.snap-toggle"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    },
+    {
+      "id": "media-upload-dendrite",
+      "role": "dendrite",
+      "sourceLevel": "cell",
+      "capabilities": ["media.pick", "media.compress", "route-point.attach-photo"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    },
+    {
+      "id": "route-share-axon",
+      "role": "axon",
+      "sourceLevel": "cell",
+      "capabilities": ["route.export", "route.share-link"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    },
+    {
+      "id": "route-import-dendrite",
+      "role": "dendrite",
+      "sourceLevel": "cell",
+      "capabilities": ["route.import-json", "route.import-link", "route.import-gpx", "route.import-geojson"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    },
+    {
+      "id": "ai-route-cortex",
+      "role": "cortex",
+      "sourceLevel": "cell",
+      "capabilities": ["route.ai.extract", "route.ai.ingest-file", "route.ai.resolve-poi", "route.ai.order", "route.ai.review"],
+      "platforms": { "web": "supported", "ios": "prebundled", "android": "prebundled" }
+    }
+  ]
+}

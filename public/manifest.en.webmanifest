@@ -1,0 +1,12 @@
+{
+  "name": "Netrin",
+  "short_name": "Netrin",
+  "description": "Nationwide walking and cycling route community",
+  "lang": "en",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/netrin/",
+  "scope": "/netrin/",
+  "background_color": "#0b0c0e",
+  "theme_color": "#0b0c0e"
+}

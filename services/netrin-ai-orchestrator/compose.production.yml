@@ -1,0 +1,40 @@
+services:
+  orchestrator:
+    image: ${NETRIN_AI_IMAGE:-netrin-ai-orchestrator:local}
+    pull_policy: never
+    container_name: netrin-ai-orchestrator
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8787:8787"
+    networks:
+      ai_egress:
+        ipv4_address: 172.31.248.2
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+networks:
+  ai_egress:
+    name: netrin-ai-egress
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 172.31.248.0/28
+          gateway: 172.31.248.1

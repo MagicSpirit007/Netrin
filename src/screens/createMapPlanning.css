@@ -1,0 +1,181 @@
+.place-search-picker,
+.map-planner__search,
+.map-planner__candidate,
+.map-planner__candidate-copy {
+  display: grid;
+}
+
+.place-search-picker {
+  position: relative;
+  gap: 7px;
+  min-width: 0;
+}
+
+.place-search-picker .nsearch__clear {
+  width: 44px;
+  height: 44px;
+  margin-right: -8px;
+}
+
+.place-search-picker .nsearch input {
+  min-height: 44px;
+}
+
+.place-search-picker__popover {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  gap: 4px;
+  max-height: 280px;
+  padding: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--fg);
+  background: var(--ink-900);
+  border: var(--stroke-2) solid var(--line-ink);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-hard);
+}
+
+.place-search-picker__popover > p {
+  margin: 8px;
+}
+
+.place-search-picker__popover > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 10px;
+  color: var(--fg);
+  text-align: left;
+  background: var(--ink-800);
+  border: var(--stroke-1) solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  touch-action: manipulation;
+}
+
+.place-search-picker__popover > button > span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.place-search-picker__popover > button b,
+.place-search-picker__popover > button small,
+.map-planner__candidate-copy > b,
+.map-planner__candidate-copy > span {
+  overflow-wrap: anywhere;
+}
+
+.place-search-picker__popover > button b {
+  font: 700 14px var(--font-sans);
+}
+
+.place-search-picker__popover > button small {
+  color: var(--fg-muted);
+  font: var(--type-body-sm);
+}
+
+.place-search-picker__popover > button:hover,
+.place-search-picker__popover > button.is-active {
+  color: var(--on-signal);
+  background: var(--signal-green);
+  border-color: var(--line-ink);
+}
+
+.place-search-picker__popover > button:hover small,
+.place-search-picker__popover > button.is-active small {
+  color: var(--ink-600);
+}
+
+.place-search-picker__error {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+}
+
+.place-search-picker__error p {
+  margin: 0;
+  color: var(--signal-red);
+  font: var(--type-body-sm);
+}
+
+.place-search-picker__error .nbtn,
+.map-planner__candidate .nbtn {
+  min-height: 44px;
+}
+
+.place-search-picker__error .nbtn {
+  justify-self: start;
+}
+
+.map-planner__search {
+  position: relative;
+  z-index: 30;
+  gap: 7px;
+}
+
+.map-planner__search-hint {
+  margin: 0;
+}
+
+.map-planner__map {
+  height: 260px;
+}
+
+.route-editor__map {
+  height: 220px;
+}
+
+.map-planner__candidate {
+  gap: 12px;
+}
+
+.map-planner__candidate-copy {
+  gap: 5px;
+  min-width: 0;
+}
+
+.map-planner__candidate-copy > b {
+  font: var(--type-subtitle);
+}
+
+.map-planner__candidate-copy > span:not(.eyeline) {
+  color: var(--fg-muted);
+  font: var(--type-body-sm);
+}
+
+.map-planner__progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 10px 12px;
+  color: var(--fg);
+  background: var(--ink-800);
+  border: var(--stroke-1) solid var(--line-soft);
+  border-radius: var(--radius-md);
+}
+
+.map-planner__point-role {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 24px;
+  padding: 3px 8px;
+  color: var(--fg-ink);
+  background: var(--paper-pure);
+  border: var(--stroke-1) solid var(--line-ink);
+  border-radius: var(--radius-sm);
+  font: var(--type-label);
+}
+
+@media (max-width: 390px) {
+  .map-planner__map {
+    height: 240px;
+  }
+}

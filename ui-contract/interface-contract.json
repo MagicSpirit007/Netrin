@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "application": {
+    "canonicalId": "netrin",
+    "displayNames": { "zh-CN": "移步换景", "en": "Netrin" },
+    "primaryViewport": { "width": 390, "height": 844 },
+    "locales": ["zh-CN", "en"]
+  },
+  "globalRequirements": [
+    "All user-visible text is localized in zh-CN and en.",
+    "Every interactive target is at least 44 by 44 CSS pixels and has a programmatic name.",
+    "AMap attribution remains visible and provider nodes stay outside appearance styling.",
+    "Reduced-motion, focus, loading, empty, error, disabled and ready states remain testable."
+  ],
+  "screens": [
+    { "id": "map-navigation", "routes": ["/"], "requiredElements": ["app-shell", "map-frame", "map-controls", "navigation-instruction", "route-point-card"], "states": ["no-route", "preview", "locating", "navigating", "route-error", "completed"] },
+    { "id": "route-catalog", "routes": ["/routes"], "requiredElements": ["top-bar", "text-field", "route-card", "loading-state", "empty-state", "error-state"], "states": ["loading", "ready", "empty", "filtered-empty", "error"] },
+    { "id": "route-detail", "routes": ["/routes/:routeId"], "requiredElements": ["top-bar", "route-card", "route-point-card", "media-gallery", "button"], "states": ["loading", "ready", "downloaded", "error"] },
+    { "id": "route-authoring", "routes": ["/author"], "requiredElements": ["map-frame", "recorder-panel", "route-plan-confirmation", "switch", "text-field", "media-gallery"], "states": ["planning", "recording", "locating", "editing-point", "saved"] },
+    { "id": "ai-route-authoring", "routes": ["/author/ai"], "requiredElements": ["top-bar", "text-field", "route-plan-confirmation", "loading-state", "error-state"], "states": ["idle", "uploading", "generating", "review", "error"] },
+    { "id": "profile-community", "routes": ["/profile", "/profile/*"], "requiredElements": ["top-bar", "button", "route-card", "loading-state", "empty-state", "error-state"], "states": ["menu", "account", "downloads", "drafts", "submissions"] },
+    { "id": "appearance-studio", "routes": ["/appearance-studio"], "requiredElements": ["top-bar", "button", "text-field", "switch", "loading-state", "empty-state", "error-state"], "states": ["ready", "valid", "invalid", "reviewed", "submitting"] },
+    { "id": "phone-auth", "routes": ["/auth", "/auth/*"], "requiredElements": ["top-bar", "text-field", "button", "loading-state", "error-state"], "states": ["signed-out", "otp", "signed-in", "error"] },
+    { "id": "legal-document", "routes": ["/legal/:document"], "requiredElements": ["top-bar", "button", "loading-state", "error-state"], "states": ["loading", "ready", "error"] },
+    { "id": "admin-moderation", "routes": ["/admin"], "requiredElements": ["top-bar", "button", "text-field", "route-card", "media-gallery", "loading-state", "empty-state", "error-state"], "states": ["denied", "queue", "routes", "appearance", "accounts", "audit", "error"] }
+  ],
+  "components": [
+    { "id": "app-shell", "states": ["ready"] }, { "id": "top-bar", "states": ["default"] },
+    { "id": "bottom-navigation", "states": ["default"] }, { "id": "button", "states": ["default", "disabled", "busy"] },
+    { "id": "icon-button", "states": ["default", "disabled"] }, { "id": "text-field", "states": ["default", "disabled", "invalid"] },
+    { "id": "switch", "states": ["default", "disabled"] }, { "id": "route-card", "states": ["default", "selected", "downloaded"] },
+    { "id": "route-point-card", "states": ["default", "target", "arrived", "editing"] }, { "id": "media-gallery", "states": ["empty", "ready", "full", "error"] },
+    { "id": "map-frame", "states": ["loading", "ready", "error"] }, { "id": "map-controls", "states": ["default", "following"] },
+    { "id": "recorder-panel", "states": ["planning", "idle", "recording", "locating"] }, { "id": "route-plan-confirmation", "states": ["draft", "valid", "invalid", "confirmed"] },
+    { "id": "navigation-instruction", "states": ["loading", "ready", "error", "arrived"] }, { "id": "sheet", "states": ["collapsed", "expanded"] },
+    { "id": "dialog", "states": ["open"] }, { "id": "toast", "states": ["info", "success", "error"] },
+    { "id": "loading-state", "states": ["visible"] }, { "id": "empty-state", "states": ["visible"] }, { "id": "error-state", "states": ["visible"] }
+  ],
+  "slots": [
+    { "id": "brand-wordmark", "screens": ["map-navigation"], "purpose": "The complete localized brand label container." },
+    { "id": "brand-title", "screens": ["map-navigation"], "purpose": "The stable NETRIN title inside the brand label." },
+    { "id": "brand-name", "screens": ["map-navigation"], "purpose": "The localized application name inside the brand label." },
+    { "id": "brand-mark", "screens": ["map-navigation"], "purpose": "The accessible live-status mark inside the brand label." }
+  ],
+  "selectorContract": {
+    "screenRoot": "[data-appearance-hook=\"screen-content\"][data-appearance-screen=\"<screen-id>\"]",
+    "state": "[data-appearance-state=\"<state-id>\"]",
+    "slot": "[data-appearance-slot=\"<slot-id>\"]",
+    "component": "[data-appearance-hook=\"<component-id>\"]"
+  },
+  "appearanceBoundary": {
+    "receives": ["localized fixture data", "view state", "semantic component inputs", "user action callbacks"],
+    "mustNotAccess": ["Supabase client", "IndexedDB", "browser geolocation", "AMap service objects", "external network", "secret values"]
+  }
+}

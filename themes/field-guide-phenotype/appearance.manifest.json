@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 2,
+  "interfaceContractVersion": 2,
+  "id": "field-guide-phenotype",
+  "displayName": "Field Guide",
+  "version": "3.0.0",
+  "type": "phenotype",
+  "author": "Netrin",
+  "license": "Project license",
+  "compatibility": { "minAppVersion": "0.1.2" },
+  "screens": [
+    "map-navigation", "route-catalog", "route-detail", "route-authoring", "ai-route-authoring",
+    "profile-community", "appearance-studio", "phone-auth", "legal-document", "admin-moderation"
+  ],
+  "components": [
+    "app-shell", "top-bar", "bottom-navigation", "button", "icon-button", "text-field",
+    "switch", "route-card", "route-point-card", "media-gallery", "map-frame", "map-controls",
+    "recorder-panel", "route-plan-confirmation", "navigation-instruction", "sheet", "dialog", "toast", "loading-state",
+    "empty-state", "error-state"
+  ],
+  "assets": [],
+  "checksum": "builtin-field-guide-phenotype"
+}

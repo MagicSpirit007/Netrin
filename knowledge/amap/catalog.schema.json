@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netrin.local/schemas/amap-knowledge-catalog-v1.json",
+  "title": "AMap development knowledge catalog",
+  "type": "object",
+  "required": ["schemaVersion", "reviewedAt", "entries"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reviewedAt": { "type": "string", "format": "date" },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "product", "version", "capability", "api", "useCases", "inputs",
+          "outputs", "coordinateSystem", "keyType", "security", "statuses", "limits",
+          "projectMapping", "sourceUrl", "sourceLastUpdated", "reviewedAt", "notes"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "product": { "type": "string" },
+          "version": { "type": "string" },
+          "capability": { "type": "string" },
+          "api": { "type": "string" },
+          "useCases": { "type": "array", "items": { "type": "string" } },
+          "inputs": { "type": "array", "items": { "type": "string" } },
+          "outputs": { "type": "array", "items": { "type": "string" } },
+          "coordinateSystem": { "type": "string" },
+          "keyType": { "type": "string" },
+          "security": { "type": "array", "items": { "type": "string" } },
+          "statuses": { "type": "array", "items": { "type": "string" } },
+          "limits": { "type": "array", "items": { "type": "string" } },
+          "projectMapping": { "type": "array", "items": { "type": "string" } },
+          "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://lbs\\.amap\\.com/" },
+          "sourceLastUpdated": { "type": ["string", "null"] },
+          "reviewedAt": { "type": "string", "format": "date" },
+          "notes": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
