@@ -58,7 +58,7 @@ M1.5 expand（2026-07-20）、M2 激活与 **R1（M3+M4，2026-07-24）** 已在
 - **公开仓库不记录生产主机、活动目录、备份哈希或已应用迁移状态**。仓库中的 SQL、Functions、AI 服务与 Nginx 内容均为源码或模板；任何真实部署状态只由部署者的私有运维记录确认。
 - 四底栏路由：`/`、`/discover`、`/create`、`/profile`；另有 `/route/:routeId`、`/guide/:routeId`、`/workshop`、`/auth`、`/admin`、`/appearance-studio`、`/legal`。`/creator/:publicId` 与 `/notifications` 不存在。
 - `/create` 三入口（地图规划 / 现场录制 / 文件导入）与 `/create/:draftId` 统一路线编辑器已随 R1 静态站上线；草稿 `version:5`（兼容迁移 v4），几何必须由作者确认
-- M9 / R5 Provider 1.3.0 已于 2026-08-14 生产激活，2026-08-15 静态同源入口修复上线：仅提示词+文件（PDF/DOCX/TXT/MD），固定 Qwen/Kimi/DeepSeek 与受限自定义 OpenAI Chat Completions；无视觉、URL 抓取、聚合模型目录或 OCR。Key 只在当前标签页 `sessionStorage` 与活动请求内；草稿不保存 Provider/模型/Base URL/Key/轨迹。服务端文件与自定义端点开关已开启；`/analyze` 1 MiB，目录/探测 32 KiB 且独立限速，容器出站仅允许公网 TCP 443。API base 留空默认同源，入口由运行时 providers 能力决定；公网基础烟测、全新 Chromium、DeepSeek 官方直连及**官家人工生产烟测**通过，专业披露复核仍待完成
+- M9 / R5 Provider 1.3.0 支持提示词与文件（PDF/DOCX/TXT/MD）、固定 Qwen/Kimi/DeepSeek 以及受限自定义 OpenAI Chat Completions；不支持视觉、URL 抓取、聚合模型目录或 OCR。Key 只在当前页面进程与活动请求内存中；刷新或关闭页面即丢失，草稿也不保存 Provider、模型、Base URL、Key 或轨迹。`/analyze` 上限 1 MiB，目录与探测上限 32 KiB 并独立限速；自定义端点仅允许经公网校验并固定 IP 的 HTTPS 443。API base 留空时默认同源，入口由运行时 providers 能力决定
 - 严格 GPX / GeoJSON 导入已上线；发现页支持本机路线汇总、筛选、搜索与地图选择；独立创意工坊承载云端受审核摘要与非社交推荐；路线详情支持线路、模式、指标、有序重点、分享、离线保存与开始导览
 - `/guide/:routeId` 直接按 URL 加载路线，不依赖全局 `activeRouteId`；导览隐藏底栏，正常跟随持久 WGS-84 几何，去起点或偏航时才临时重算
 - 客户端运行时重点字段仅 `highlightTitle`（legacy wire 的 `speciesName` 只在归一器入口消费）

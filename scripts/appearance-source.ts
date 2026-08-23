@@ -1,5 +1,5 @@
 // @ts-nocheck -- Shared by tsx CLI and the Node-only Vite plugin, outside the browser compilation target.
-import { readFile, readdir, stat } from 'node:fs/promises'
+import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { createAppearanceArchive, isZipBytes, parseAppearanceArchive } from '../src/appearance/packageFormat'
 import type { AppearanceAsset, AppearanceBinaryAsset, AppearanceImportResult, AppearanceManifest, AppearancePackage, AppearanceTokensDocument } from '../src/appearance/types'
@@ -43,8 +43,13 @@ export async function buildAppearanceSource(directory: string): Promise<{ archiv
 
 export async function checkAppearanceInput(input: string): Promise<AppearanceImportResult> {
   const absolute = path.resolve(input)
-  if ((await stat(absolute)).isDirectory()) return (await buildAppearanceSource(absolute)).result
-  const bytes = new Uint8Array(await readFile(absolute))
+  let bytes: Uint8Array
+  try {
+    bytes = new Uint8Array(await readFile(absolute))
+  } catch (error) {
+    if ((error as { code?: string }).code !== 'EISDIR') throw error
+    return (await buildAppearanceSource(absolute)).result
+  }
   if (!isZipBytes(bytes)) {
     return {
       report: {

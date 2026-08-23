@@ -88,28 +88,21 @@ if (serviceWorkerFiles.length === 0) {
 
 const swText = serviceWorkerFiles.map((path) => readFileSync(path, 'utf8')).join('\n')
 
-/** Host patterns that would indicate offline basemap/tile caching (forbidden). */
-const amapExternalCachePatterns = [
-  /webapi\.amap\.com/i,
-  /restapi\.amap\.com/i,
-  /vdata\.amap\.com/i,
-  /wprd\d*\.is\.autonavi\.com/i,
-  /webrd\d*\.is\.autonavi\.com/i,
-  /map\.amap\.com/i,
-  /amap\.com\/(?:v\d\/)?(?:tile|maps|maptiles)/i,
-  /autonavi\.com/i
-]
+/** Host markers that would indicate offline AMap basemap/tile caching (forbidden). */
+const amapExternalCacheMarkers = ['amap.com', 'autonavi.com']
+const normalizedSwText = swText.toLowerCase()
 
-for (const pattern of amapExternalCachePatterns) {
-  if (swText && pattern.test(swText)) {
+for (const marker of amapExternalCacheMarkers) {
+  if (normalizedSwText.includes(marker)) {
     failures.push(
-      `service worker / workbox must not cache AMap external resources (${pattern})`
+      `service worker / workbox must not cache AMap external resources (${marker})`
     )
   }
 }
 
 // Runtime caching entries that target AMap/autonavi URLs are also forbidden.
-if (swText && /runtimeCaching[\s\S]{0,400}(?:amap|autonavi)/i.test(swText)) {
+if (normalizedSwText.includes('runtimecaching') &&
+    (normalizedSwText.includes('amap') || normalizedSwText.includes('autonavi'))) {
   failures.push('service worker runtimeCaching must not target AMap / autonavi hosts')
 }
 

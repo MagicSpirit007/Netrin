@@ -19,25 +19,20 @@ class MemorySessionStorage implements Storage {
 describe('AI provider session key storage', () => {
   beforeEach(() => {
     vi.stubGlobal('sessionStorage', new MemorySessionStorage())
+    clearAllProviderSessionData()
   })
 
-  it('restores a key after a refresh-like module call and isolates provider fingerprints', async () => {
+  it('keeps keys in page memory, isolates provider fingerprints, and avoids web storage', async () => {
     const fixed = { providerId: 'deepseek-cn' }
     const custom = { providerId: 'custom-openai', baseUrl: 'https://llm.example.com/v1' }
     await saveProviderSessionKey(fixed, 'deepseek-secret')
     await saveProviderSessionKey(custom, 'custom-secret')
     expect(await loadProviderSessionKey(fixed)).toBe('deepseek-secret')
     expect(await loadProviderSessionKey(custom)).toBe('custom-secret')
-    expect([...Array(sessionStorage.length)].map((_, index) => sessionStorage.key(index)))
-      .toEqual(expect.arrayContaining([
-        expect.stringMatching(/^netrin\.ai\.provider-key\.[a-f0-9]{64}$/),
-        expect.stringMatching(/^netrin\.ai\.provider-key\.[a-f0-9]{64}$/)
-      ]))
-    expect([...Array(sessionStorage.length)].map((_, index) => sessionStorage.key(index)).join(''))
-      .not.toContain('llm.example.com')
+    expect(sessionStorage.length).toBe(0)
   })
 
-  it('clears one key or all provider session data without touching unrelated session state', async () => {
+  it('clears one key or all in-memory provider data without touching unrelated session state', async () => {
     const fixed = { providerId: 'deepseek-cn' }
     const custom = { providerId: 'custom-openai', baseUrl: 'https://llm.example.com/v1' }
     await saveProviderSessionKey(fixed, 'deepseek-secret')

@@ -1,4 +1,5 @@
 const KEY_PREFIX = 'netrin.ai.provider-key.'
+const providerKeys = new Map<string, string>()
 
 export type ProviderSessionIdentity = {
   providerId: string
@@ -16,30 +17,23 @@ async function storageKey(prefix: string, identity: ProviderSessionIdentity): Pr
 }
 
 export async function loadProviderSessionKey(identity: ProviderSessionIdentity): Promise<string> {
-  try { return sessionStorage.getItem(await storageKey(KEY_PREFIX, identity)) ?? '' } catch { return '' }
+  try { return providerKeys.get(await storageKey(KEY_PREFIX, identity)) ?? '' } catch { return '' }
 }
 
 export async function saveProviderSessionKey(identity: ProviderSessionIdentity, apiKey: string): Promise<void> {
   try {
     const key = await storageKey(KEY_PREFIX, identity)
-    if (apiKey) sessionStorage.setItem(key, apiKey)
-    else sessionStorage.removeItem(key)
+    if (apiKey) providerKeys.set(key, apiKey)
+    else providerKeys.delete(key)
   } catch {
-    // Session persistence is optional; the in-memory form remains usable.
+    // The screen-local form value remains usable if fingerprinting is unavailable.
   }
 }
 
 export async function clearProviderSessionKey(identity: ProviderSessionIdentity): Promise<void> {
-  try { sessionStorage.removeItem(await storageKey(KEY_PREFIX, identity)) } catch { /* noop */ }
+  try { providerKeys.delete(await storageKey(KEY_PREFIX, identity)) } catch { /* noop */ }
 }
 
 export function clearAllProviderSessionData(): void {
-  try {
-    const remove: string[] = []
-    for (let index = 0; index < sessionStorage.length; index += 1) {
-      const key = sessionStorage.key(index)
-      if (key?.startsWith(KEY_PREFIX)) remove.push(key)
-    }
-    remove.forEach((key) => sessionStorage.removeItem(key))
-  } catch { /* noop */ }
+  providerKeys.clear()
 }

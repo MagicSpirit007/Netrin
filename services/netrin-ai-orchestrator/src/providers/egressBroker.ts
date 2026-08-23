@@ -155,20 +155,25 @@ export class LoopbackProviderEgressBroker implements ProviderEgress {
       safeJson(response, 413)
       return
     }
-    const targetBase = lease.target.toString().replace(/\/+$/, '')
-    const target = new URL(`${targetBase}/${relative}`)
-    const upstream = httpsRequest(target, {
+    const endpoint = isModels ? 'models' : 'chat/completions'
+    const targetBasePath = lease.target.pathname.replace(/\/+$/, '')
+    const upstreamPath = `${targetBasePath}/${endpoint}`
+    const upstream = httpsRequest({
+      protocol: 'https:',
+      hostname: lease.pinned.address,
+      family: lease.pinned.family,
+      port: 443,
+      servername: lease.target.hostname,
+      path: upstreamPath,
       method: request.method,
       agent: false,
       headers: {
+        host: lease.target.hostname,
         authorization,
         accept: isModels ? 'application/json' : 'text/event-stream, application/json',
         'accept-encoding': 'identity',
         ...(isChat ? { 'content-type': 'application/json' } : {}),
         'user-agent': 'Netrin-AI-Provider/1.3'
-      },
-      lookup: (_hostname, _options, callback) => {
-        callback(null, lease.pinned.address, lease.pinned.family)
       }
     })
     const connectTimer = setTimeout(() => upstream.destroy(new Error('connect timeout')), CONNECT_TIMEOUT_MS)
