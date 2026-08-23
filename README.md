@@ -1,5 +1,7 @@
 # Netrin
 
+**English** | [简体中文](README.zh-CN.md)
+
 Netrin is a mobile-first, installable web app for authoring, reviewing,
 sharing, downloading, and guiding walking, CityWalk, and recreational cycling
 routes. Route geometry is stored as WGS-84 GeoJSON and converted only at map
