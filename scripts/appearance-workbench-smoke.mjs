@@ -9,7 +9,9 @@ const root = process.cwd()
 const port = Number(process.env.NETRIN_APPEARANCE_LAYOUT_PORT ?? 4193)
 const debugPort = Number(process.env.NETRIN_APPEARANCE_LAYOUT_DEBUG_PORT ?? 9343)
 const baseUrl = `http://127.0.0.1:${port}/netrin/appearance-studio?tab=workbench`
-const artifactDir = resolve(process.env.NETRIN_APPEARANCE_LAYOUT_ARTIFACT_DIR ?? join(tmpdir(), 'netrin-appearance-workbench-smoke'))
+const artifactDir = process.env.NETRIN_APPEARANCE_LAYOUT_ARTIFACT_DIR
+  ? resolve(process.env.NETRIN_APPEARANCE_LAYOUT_ARTIFACT_DIR)
+  : await mkdtemp(join(tmpdir(), 'netrin-appearance-workbench-smoke-'))
 const browserCandidates = [
   process.env.CHROME_PATH,
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',

@@ -33,9 +33,9 @@ const zh = {
   providerLabel: '模型服务商',
   modelLabel: '模型',
   modelCatalogLoading: '正在读取模型目录…',
-  apiKeyLabel: '本浏览器会话使用的 API Key',
+  apiKeyLabel: '仅保存在当前页面内存中的 API Key',
   clearCurrentKey: '清除当前 Key',
-  clearAllKeys: '清除全部会话 Key',
+  clearAllKeys: '清除全部内存 Key',
   customProvider: {
     option: '自定义 OpenAI 兼容端点',
     title: '自定义兼容端点',
@@ -135,9 +135,9 @@ const en = {
   providerLabel: 'Model provider',
   modelLabel: 'Model',
   modelCatalogLoading: 'Loading the model catalog…',
-  apiKeyLabel: 'API key for this browser session',
+  apiKeyLabel: 'API key held only in this page\'s memory',
   clearCurrentKey: 'Clear current key',
-  clearAllKeys: 'Clear all session keys',
+  clearAllKeys: 'Clear all in-memory keys',
   customProvider: {
     option: 'Custom OpenAI-compatible endpoint',
     title: 'Custom compatible endpoint',

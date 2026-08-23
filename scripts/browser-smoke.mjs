@@ -15,9 +15,9 @@ const aiCapabilitiesSmoke = process.env.NETRIN_SMOKE_AI_CAPABILITIES === '1' || 
 const aiConfiguredSmoke = !aiUnavailableSmoke
 const skipOffRouteUiAssert = process.env.NETRIN_SMOKE_SKIP_OFF_ROUTE_UI_ASSERT === '1'
 const externalAiMockUrl = process.env.NETRIN_SMOKE_AI_BASE_URL?.replace(/\/$/, '')
-const artifactDir = resolve(
-  process.env.NETRIN_SMOKE_ARTIFACT_DIR ?? join(tmpdir(), 'netrin-browser-smoke')
-)
+const artifactDir = process.env.NETRIN_SMOKE_ARTIFACT_DIR
+  ? resolve(process.env.NETRIN_SMOKE_ARTIFACT_DIR)
+  : await mkdtemp(join(tmpdir(), 'netrin-browser-smoke-'))
 
 const routes = [
   { name: 'home', path: '', expectedText: '移步换景' },
@@ -458,20 +458,13 @@ async function main() {
             hasNoUrlInput: !document.querySelector('input[type="url"]')
           }))()`
         })
-        const setSessionKey = await cdp.send('Runtime.evaluate', {
+        const setMemoryKey = await cdp.send('Runtime.evaluate', {
           returnByValue: true,
-          awaitPromise: true,
-          expression: `(async () => {
-            const provider = [...document.querySelectorAll('.nfield')]
-              .find((item) => item.querySelector('.nfield__label')?.innerText === '模型服务商')
-              ?.querySelector('select')?.value || 'deepseek-cn'
-            const digest = await crypto.subtle.digest(
-              'SHA-256',
-              new TextEncoder().encode(provider + '\\0')
-            )
-            const fingerprint = [...new Uint8Array(digest)]
-              .map((byte) => byte.toString(16).padStart(2, '0')).join('')
-            sessionStorage.setItem('netrin.ai.provider-key.' + fingerprint, 'smoke-session-key')
+          expression: `(() => {
+            const key = document.querySelector('.ai-route-screen input[type="password"]')
+            if (!key) return false
+            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(key, 'smoke-memory-key')
+            key.dispatchEvent(new Event('input', { bubbles: true }))
             return true
           })()`
         })
@@ -531,9 +524,9 @@ async function main() {
           !fileMode.result.value.hasTextLayerRule ||
           !fileMode.result.value.hasNoVisionClaim ||
           !fileMode.result.value.hasNoUrlInput ||
-          !setSessionKey.result.value ||
-          restoredProvider.result.value.restoredKey !== 'smoke-session-key' ||
-          restoredProvider.result.value.sessionKeyCount !== 1 ||
+          !setMemoryKey.result.value ||
+          restoredProvider.result.value.restoredKey !== '' ||
+          restoredProvider.result.value.sessionKeyCount !== 0 ||
           !restoredProvider.result.value.options.includes('deepseek-cn') ||
           !restoredProvider.result.value.options.includes('qwen-cn') ||
           !restoredProvider.result.value.options.includes('kimi-cn') ||
@@ -548,7 +541,7 @@ async function main() {
             custom: customPanel.result.value
           })}`)
         } else {
-          console.log('[smoke] AI route: text+file tabs, session key restore, and custom Provider panel OK')
+          console.log('[smoke] AI route: text+file tabs, in-memory key cleared on reload, and custom Provider panel OK')
         }
       }
       let mapPlanningState = null
@@ -2046,6 +2039,9 @@ async function main() {
     if (failures.length) throw new Error(`Browser smoke failures:\n- ${failures.join('\n- ')}`)
     console.log(`[smoke] PASS: ${routes.length} routes at 390x844; localized manifests reachable.`)
   } catch (error) {
+    if (aiMock) {
+      console.error(`[smoke] AI mock ${aiMock.url}: ${JSON.stringify(aiMock.requests)}`)
+    }
     const logs = [...previewLog, ...browserLog].join('').trim()
     if (logs) console.error(logs.slice(-4_000))
     throw error

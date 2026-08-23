@@ -2,7 +2,10 @@
 import mammoth from 'mammoth'
 import { inspectDocxArchive } from './fileValidation'
 
+const workerOrigin = self.location.origin
+
 self.onmessage = async (event: MessageEvent<ArrayBuffer>) => {
+  if (event.origin && event.origin !== workerOrigin) return
   try {
     inspectDocxArchive(event.data)
     const result = await mammoth.extractRawText({ arrayBuffer: event.data })

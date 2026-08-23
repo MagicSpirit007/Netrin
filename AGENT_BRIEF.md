@@ -23,7 +23,7 @@
 
 ## Data and services
 
-- 草稿 v5、草稿媒体、下载路线、离线包元数据、活动路线和外观设置使用 IndexedDB/`localForage`；Provider Key 只在当前标签页 `sessionStorage` 和活动请求中。
+- 草稿 v5、草稿媒体、下载路线、离线包元数据、活动路线和外观设置使用 IndexedDB/`localForage`；Provider Key 只在当前页面进程和活动请求内存中，刷新或关闭页面即丢失。
 - 投稿只接受确认几何并调用 `submit_route_v4`；SQL14 已移除旧 v3/v2 写接口。
 - 私有 `route-media` 由 `netrin-media` 签发五分钟 URL；当前函数不处理个人头像或对象大小。
 - `netrin-route-plan` 代理 AMap 步行/骑行规划，并要求有效 Supabase JWT、已确认手机号和 active 账号；限流键绑定用户 ID 与可信客户端地址。AI orchestrator 提供 Provider 1.3 文本/文件工作流。

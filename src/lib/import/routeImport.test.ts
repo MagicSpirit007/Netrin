@@ -41,6 +41,17 @@ describe('route file import', () => {
     expect(route.points.some((point) => point.text === 'x' || point.highlightTitle === 'x')).toBe(false)
   })
 
+  it('keeps imported GPX names as plain text after nested entity and markup input', () => {
+    const [route] = parseGpxRoute(`<gpx><rte><name>&lt;script&gt;alert(1)&lt;/script&gt; &amp;amp;</name>
+      <rtept lat="30" lon="120"><name><![CDATA[<b>入口</b>]]></name></rtept>
+      <rtept lat="30.01" lon="120.01" />
+    </rte></gpx>`)
+
+    expect(route.name).not.toMatch(/[<>]/)
+    expect(route.name).not.toContain('&amp;')
+    expect(route.points.find((point) => point.highlightTitle)?.highlightTitle).toBe('入口')
+  })
+
   it.each([
     { type: 'MultiLineString', coordinates: [] },
     { type: 'FeatureCollection', features: [] },

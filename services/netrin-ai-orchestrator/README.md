@@ -11,7 +11,7 @@ npm run test
 npm run start
 ```
 
-服务配置见 `.env.example`。模型 API Key 只随 `/model-catalog`、`/provider-probe` 或 `/analyze` 请求进入 request-scoped closure，请求结束即清空引用；服务端不保存 Key。浏览器只把 Key 放在当前标签页的 `sessionStorage`。
+服务配置见 `.env.example`。模型 API Key 只随 `/model-catalog`、`/provider-probe` 或 `/analyze` 请求进入 request-scoped closure，请求结束即清空引用；服务端不保存 Key。浏览器只在当前页面进程内存中持有 Key，刷新或关闭页面后即丢失。
 
 ## Provider 1.3.0 契约
 

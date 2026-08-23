@@ -88,14 +88,23 @@ function distanceMeters(coordinates: Coordinate[]): number {
 }
 
 function safeXmlText(value: string): string {
-  return value
+  const withoutMarkup = value
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
     .replace(/<[^>]+>/g, '')
+  const decoded = withoutMarkup.replace(/&(lt|gt|amp|quot|apos|#39);/gi, (match, entity: string) => {
+    const replacements: Record<string, string> = {
+      lt: '',
+      gt: '',
+      amp: '&',
+      quot: '"',
+      apos: "'",
+      '#39': "'"
+    }
+    return replacements[entity.toLowerCase()] ?? match
+  })
+  return decoded
+    .replace(/&(?:#\d+|#x[\da-f]+|[a-z][\w.-]*);/gi, '')
+    .replace(/[<>]/g, '')
     .trim()
 }
 

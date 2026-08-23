@@ -39,7 +39,7 @@
 - 使用独立 Node.js 服务 `netrin-ai-orchestrator`，不把 Agent 运行时放入 Supabase Edge Function。
 - Agent 运行时采用 Pi 的 `pi-agent-core + pi-ai`，不部署完整 Pi Coding Agent CLI。
 - 只给 Agent 暴露路线领域工具，不提供 Shell、文件写入、任意网络请求或通用 HTTP 工具。
-- 用户自带大模型 API Key（BYOK）；浏览器只放入当前标签页的 `sessionStorage`，服务端只在请求作用域中持有；Key 不进入数据库、IndexedDB、Service Worker、日志、指标或草稿。关闭标签页、退出登录或鉴权失败会清除会话 Key。
+- 用户自带大模型 API Key（BYOK）；浏览器只在当前页面进程内存中持有，刷新或关闭页面后即丢失；服务端只在请求作用域中持有。Key 不进入 Web Storage、数据库、IndexedDB、Service Worker、日志、指标或草稿，退出登录或鉴权失败也会清除内存 Key。
 - 保留 DeepSeek/Qwen/Kimi 固定注册表；自定义端点只允许公网域名、HTTPS 默认 443 与 OpenAI Chat Completions 兼容接口。不支持聚合路由、URL 抓取、图片或视觉消息。
 - PDF/DOCX 文字提取在用户设备完成；不运行浏览器或服务端文字识别模型。
 - 不单独建设“原型阶段”和大型评测平台；把约 16 个固定案例直接放入自动化测试。
@@ -892,7 +892,7 @@ npm run test:smoke
 **生产状态（2026-08-15）：Provider 1.3 容器、出站防火墙、Nginx 与服务端文件/自定义开关已发布；同源 AI 静态入口已修复，全新 Chromium 与官家人工生产烟测均通过。现仅余隐私、第三方服务披露与专业复核。**
 
 1. 完成错误码、脱敏、限流、取消、超时和预算测试。
-2. 检查构建产物、除当前标签页 `sessionStorage` 之外的浏览器存储、日志和崩溃报告中没有 Key 或来源正文。
+2. 检查构建产物、全部浏览器持久化存储、日志和崩溃报告中没有 Key 或来源正文；Key 只可存在于当前页面进程与活动请求内存。
 3. 用固定案例完成内部验收。
 4. 完成隐私政策、用户协议和第三方服务披露。
 5. 构建并部署 `netrin-ai-orchestrator` 容器、反向代理与出站防火墙配置。
@@ -927,7 +927,7 @@ npm run test:smoke
 - 不支持的文件在浏览器和服务端均被拒绝。
 - 自定义端点通过 SSRF、DNS rebinding、固定 IP/TLS SNI、默认 443、大小和超时测试。
 - 来源资料中的提示词注入不能获得额外工具或绕过 Schema。
-- API Key 只允许出现在当前标签页的 `sessionStorage` 和活动请求内存中；不得进入 localStorage、IndexedDB、Service Worker、数据库、草稿、日志、指标、错误响应或构建产物。
+- API Key 只允许出现在当前页面进程和活动请求内存中；不得进入 sessionStorage、localStorage、IndexedDB、Service Worker、数据库、草稿、日志、指标、错误响应或构建产物。
 - Agent 达到回合、工具、Token 或时间预算时可确定性终止。
 - 390×844 下输入、歧义处理、路线审阅和确认流程可用。
 - 中英文、键盘操作、焦点和错误提示完整。
